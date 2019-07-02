@@ -11,8 +11,8 @@ export class TestTwoComponent implements OnInit {
 
   registers = registers;
 
-  a1 = '1 1 + 3 2 - / 5 *';
-  a2 = '5 1 2 + 4 * + 3 -';
+  a1 = '1 1 + 3 2 - / 5 *'; // 10
+  a2 = '5 1 2 + 4 * + 3 -'; // 14
   a3 = '1 2 3 * +';
   a4 = '1 2 3 * + 4 /';
 
@@ -30,7 +30,7 @@ export class TestTwoComponent implements OnInit {
   }
 
   init() {
-    const exp: any = this.a1.split(' ');
+    const exp: any = this.a2.split(' ');
 
     exp.forEach((el, i) => {
       if (!isNaN(el)) {
@@ -55,11 +55,17 @@ export class TestTwoComponent implements OnInit {
     });
 
     this.text += `\n${this.exec}`;
-    this.text += `\n\n  sw  $5, 0(${this.operands[0]})`;
 
+    const result = this.operands.pop();
 
-    console.log(this.data);
-    console.log(this.text);
+    this.text += `\n\n  move $a0, ${result}`;
+    this.text += `\n  li ${result}, 1`;
+    this.text += `\n  syscall`;
+
+    // console.log(this.operands);
+
+    // console.log(this.data);
+    // console.log(this.text);
   }
 
   initData(reg: string, value: string) {
