@@ -24,6 +24,9 @@ export class TestTwoComponent implements OnInit {
   a9 = '4 F'; // 24
   a10 = '5 F'; // 120
   a11 = '5 F 2 +'; // 122
+  /* potência */
+  a12 = '2 3 p'; // 8
+  a13 = '3 5 p'; // 243
 
   operands = [];
 
@@ -40,7 +43,7 @@ export class TestTwoComponent implements OnInit {
   }
 
   init() {
-    const exp: any = this.a11.split(' ');
+    const exp: any = this.a12.split(' ');
 
     exp.forEach((el, i) => {
       if (!isNaN(el)) {
@@ -73,20 +76,21 @@ export class TestTwoComponent implements OnInit {
           const result = this.operands.pop();
           this.operands.push(this.printFatorial(result));
         }
+        if (el === 'p') {
+          this.text += '\n\n  jal init_potencia';
+
+          const exponent = this.operands.pop();
+          const result = this.operands.pop();
+          this.operands.push(this.printPotencia(result, exponent));
+        }
       }
     });
 
     this.text += `\n${this.exec}`;
 
-    // const result = this.operands.pop();
+    const finalResult = this.operands.pop();
 
-    // this.text += `\n\n  jal  init_sqrt`;
-    //
-    // this.operands.push(this.printRaiz(result));
-
-    const resultadoRaiz = this.operands.pop();
-
-    this.text += `\n\n  move $v0, ${resultadoRaiz}`;
+    this.text += `\n\n  move $v0, ${finalResult}`;
     this.text += `\n  move $a0, $v0`;
     this.text += `\n  li $v0, 1`;
     this.text += `\n  syscall`;
@@ -126,10 +130,10 @@ export class TestTwoComponent implements OnInit {
   }
 
   printSqrt(source: string) {
+    const destination = this.registers.pop();
 
     const auxReg1 = this.registers.pop();
     const auxReg2 = this.registers.pop();
-    const destination = this.registers.pop();
 
     this.aux += `\n\n\n  init_sqrt:`;
     this.aux += `\n    li	${destination}, 0`;
@@ -182,6 +186,27 @@ export class TestTwoComponent implements OnInit {
     j fatorial_loop`;
 
     this.aux += `\n\n   fatorial_exit:
+    jr $ra`;
+
+    return destination;
+  }
+
+  printPotencia(source: string, exp: string) {
+    const destination = this.registers.pop();
+
+    const auxReg0 = this.registers.pop();
+
+    this.aux += `\n\n\n  init_potencia:
+    li ${auxReg0}, 1
+    move ${destination}, ${source}
+    sub ${exp}, ${exp}, ${auxReg0}`;
+
+    this.aux += `\n\n  potencia_loop:
+    mul ${destination}, ${destination}, ${source}
+    sub ${exp}, ${exp}, ${auxReg0}
+    bne ${exp}, $zero, potencia_loop`;
+
+    this.aux += `\n\n   potencia_exit:
     jr $ra`;
 
     return destination;
