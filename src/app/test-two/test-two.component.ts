@@ -16,13 +16,18 @@ export class TestTwoComponent implements OnInit {
   a3 = '1 2 3 * +';
   a4 = '1 2 3 * + 4 /';
   a5 = '5 1 2 + 4 * + 3 - 11 +'; // 25
+  /* sqrt */
   a6 = '25 s 6 +'; // 11
   a7 = '25 s 6 + 1 -'; // 10
   a8 = '25 s 6 + 5 +'; // 16
+  /* fatorial */
+  a9 = '4 F'; // 24
+  a10 = '5 F'; // 120
+  a11 = '5 F 2 +'; // 122
 
   operands = [];
 
-  data = '.data \n  error_msg: .asciiz "Não é uma raiz quadrada perfeita"';
+  data = '.data \n\n  error_msg: .asciiz "Não é uma raiz quadrada perfeita"';
   text = '.text';
   aux = '';
   exec = '';
@@ -35,7 +40,7 @@ export class TestTwoComponent implements OnInit {
   }
 
   init() {
-    const exp: any = this.a8.split(' ');
+    const exp: any = this.a11.split(' ');
 
     exp.forEach((el, i) => {
       if (!isNaN(el)) {
@@ -60,7 +65,13 @@ export class TestTwoComponent implements OnInit {
           this.text += `\n\n  jal  init_sqrt`;
 
           const result = this.operands.pop();
-          this.operands.push(this.printRaiz(result));
+          this.operands.push(this.printSqrt(result));
+        }
+        if (el === 'F') {
+          this.text += '\n\n  jal init_fatorial';
+
+          const result = this.operands.pop();
+          this.operands.push(this.printFatorial(result));
         }
       }
     });
@@ -114,7 +125,7 @@ export class TestTwoComponent implements OnInit {
     //  console.log(`>>>>>> ${s}`);
   }
 
-  printRaiz(source: string) {
+  printSqrt(source: string) {
 
     const auxReg1 = this.registers.pop();
     const auxReg2 = this.registers.pop();
@@ -142,6 +153,36 @@ export class TestTwoComponent implements OnInit {
     la $v0, 4
     syscall
     j  exit`;
+
+    return destination;
+  }
+
+  printFatorial(source: string) {
+    const destination = this.registers.pop();
+
+    const auxReg0 = this.registers.pop();
+    const auxReg1 = this.registers.pop();
+    const auxReg2 = this.registers.pop();
+    const auxReg3 = this.registers.pop();
+    const auxReg4 = this.registers.pop();
+
+    this.aux += `\n\n  init_fatorial:
+    li ${auxReg2}, 2
+    li ${destination}, 1
+    li ${auxReg0}, 1
+    add ${auxReg3}, ${source}, ${auxReg0}
+    slt ${auxReg1}, ${source}, ${auxReg2}                    # testa se num < 2 (retorna 1 se num < 2)
+    beq ${auxReg1}, $zero, fatorial_loop`;
+
+    this.aux += `\n\n  fatorial_loop:
+    addi ${auxReg4}, ${auxReg4}, 1
+    slt ${auxReg1}, ${auxReg4}, ${auxReg3}                    # Verifica se o valor esta na sua ultima posicao
+    beq ${auxReg1}, $zero, fatorial_exit        # Se chegou no final sai
+    mul ${destination}, ${destination}, ${auxReg4}                    # Começa com 1 e vai incrementando pelo produto
+    j fatorial_loop`;
+
+    this.aux += `\n\n   fatorial_exit:
+    jr $ra`;
 
     return destination;
   }
