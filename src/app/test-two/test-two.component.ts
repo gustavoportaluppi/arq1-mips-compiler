@@ -85,19 +85,19 @@ export class TestTwoComponent implements OnInit {
           this.operands.push(this.process('mul'));
         }
         if (el === 's') {
-          this.text += `\n\n  jal  init_sqrt`;
+          this.exec += `\n\n  jal  init_sqrt`;
 
           const result = this.operands.pop();
           this.operands.push(this.printSqrt(result));
         }
         if (el === 'F') {
-          this.text += '\n\n  jal init_fatorial';
+          this.exec += '\n\n  jal init_fatorial';
 
           const result = this.operands.pop();
           this.operands.push(this.printFatorial(result));
         }
         if (el === 'p') {
-          this.text += '\n\n  jal init_potencia';
+          this.exec += '\n\n  jal init_potencia';
 
           const exponent = this.operands.pop();
           const result = this.operands.pop();

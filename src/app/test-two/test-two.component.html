@@ -8,8 +8,8 @@
             <table style="width: 100%;">
               <thead>
               <tr>
-                <th>Código</th>
                 <th>Operação</th>
+                <th></th>
               </tr>
               </thead>
               <tbody>
@@ -54,8 +54,14 @@
               </thead>
               <tbody>
               <tr *ngFor="let e of exps">
-                <td>{{ e?.value }}</td>
-                <td align="center">{{ e?.result }}</td>
+                <td>
+                  <input type="text" class="form-control form-control-sm"
+                         [value]="e?.value" disabled>
+                </td>
+                <td align="center">
+                  <input type="text" class="form-control form-control-sm" style="text-align: center;"
+                         [value]="e?.result" disabled>
+                </td>
               </tr>
               </tbody>
             </table>
