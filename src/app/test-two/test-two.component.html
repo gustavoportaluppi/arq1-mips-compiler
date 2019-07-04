@@ -1,8 +1,112 @@
-<div>
-  <pre>
-    {{ data }}
-  </pre>
-  <pre>
-    {{ text }}
-  </pre>
+<div class="row">
+  <div class="col-md-4">
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card" style="font-size: 12px; background-color: #d4d5cc;">
+          <div class="card-body">
+            <table style="width: 100%;">
+              <thead>
+              <tr>
+                <th>Código</th>
+                <th>Operação</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>+</td>
+                <td>Adição</td>
+              </tr>
+              <tr>
+                <td>-</td>
+                <td>Subtração</td>
+              </tr>
+              <tr>
+                <td>*</td>
+                <td>Multiplicação</td>
+              </tr>
+              <tr>
+                <td>/</td>
+                <td>Divisão</td>
+              </tr>
+              <tr>
+                <td>s</td>
+                <td>Raiz quadrada</td>
+              </tr>
+              <tr>
+                <td>F</td>
+                <td>Fatorial</td>
+              </tr>
+              <tr>
+                <td>p</td>
+                <td>Potência</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card-body">
+            <table style="width: 100%;">
+              <thead>
+              <tr>
+                <th>Exemplo</th>
+                <th style="text-align: center;">Resultado</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let e of exps">
+                <td>{{ e?.value }}</td>
+                <td align="center">{{ e?.result }}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="col-md-8">
+
+    <div class="row">
+      <div class="col-12">
+        <form>
+          <div class="form-group">
+            <label for="exp">
+              Expressão <span style="font-size: 12px;">(notação polonesa com espaçamento entre caracteres)</span>
+            </label>
+            <input type="text"
+                   class="form-control"
+                   id="exp"
+                   name="exp"
+                   [(ngModel)]="exp"
+                   placeholder="...">
+          </div>
+
+          <button type="button" class="btn btn-primary btn-sm float-right" (click)="onClickConfirm()">
+            Gerar código
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <h6>Assembly MIPS</h6>
+        <div class="card">
+          <div class="card-body">
+            <div>
+              <pre>
+                {{ data }}
+              </pre>
+              <pre>
+                {{ text }}
+              </pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+

@@ -24,3 +24,58 @@ export const registers = [
   '$v1',
   // '$v0',
 ];
+
+export const exps = [
+  {
+    value: '1 1 + 3 2 - / 5 *',
+    result: '10'
+  },
+  {
+    value: '5 1 2 + 4 * + 3 -',
+    result: '14'
+  },
+  {
+    value: '1 2 3 * +',
+    result: '7'
+  },
+  {
+    value: '1 2 3 * + 4 /',
+    result: '1.75'
+  },
+  {
+    value: '5 1 2 + 4 * + 3 - 11 +',
+    result: '25'
+  },
+  {
+    value: '25 s 6 +',
+    result: '11'
+  },
+  {
+    value: '25 s 6 + 1 -',
+    result: '10'
+  },
+  {
+    value: '25 s 6 + 5 +',
+    result: '16'
+  },
+  {
+    value: '4 F',
+    result: '24'
+  },
+  {
+    value: '5 F',
+    result: '120'
+  },
+  {
+    value: '5 F 2 +',
+    result: '122'
+  },
+  {
+    value: '2 3 p',
+    result: '8'
+  },
+  {
+    value: '3 5 p',
+    result: '243'
+  }
+];

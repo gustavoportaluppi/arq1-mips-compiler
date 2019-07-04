@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { registers } from '../configs';
+import { registers, exps } from '../configs';
 
 @Component({
   selector: 'app-test-two',
@@ -9,29 +9,35 @@ import { registers } from '../configs';
 })
 export class TestTwoComponent implements OnInit {
 
+  exp = '1 1 + 3 2 - / 5 *';
+  exps = exps;
+
   registers = registers;
 
   a1 = '1 1 + 3 2 - / 5 *'; // 10
   a2 = '5 1 2 + 4 * + 3 -'; // 14
-  a3 = '1 2 3 * +';
-  a4 = '1 2 3 * + 4 /';
+  a3 = '1 2 3 * +'; // 7
+  a4 = '1 2 3 * + 4 /'; // 1.75
   a5 = '5 1 2 + 4 * + 3 - 11 +'; // 25
+
   /* sqrt */
   a6 = '25 s 6 +'; // 11
   a7 = '25 s 6 + 1 -'; // 10
   a8 = '25 s 6 + 5 +'; // 16
+
   /* fatorial */
   a9 = '4 F'; // 24
   a10 = '5 F'; // 120
   a11 = '5 F 2 +'; // 122
+
   /* potência */
   a12 = '2 3 p'; // 8
   a13 = '3 5 p'; // 243
 
   operands = [];
 
-  data = '.data \n\n  error_msg: .asciiz "Não é uma raiz quadrada perfeita"';
-  text = '.text';
+  data = `\n.data\n`;
+  text = `\n.text`;
   aux = '';
   exec = '';
 
@@ -39,11 +45,25 @@ export class TestTwoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.init();
   }
 
-  init() {
-    const exp: any = this.a12.split(' ');
+  onClickConfirm() {
+    this.resetData();
+    this.initAssembly();
+  }
+
+  resetData() {
+    this.registers = registers;
+    this.operands = [];
+
+    this.data = `\n.data\n`;
+    this.text = '\n.text';
+    this.aux = '';
+    this.exec = '';
+  }
+
+  initAssembly() {
+    const exp: any = this.exp.split(' ');
 
     exp.forEach((el, i) => {
       if (!isNaN(el)) {
@@ -126,10 +146,12 @@ export class TestTwoComponent implements OnInit {
     s += `  ${op1} ${op2} ${op3}`;
 
     this.exec += `\n  ${s}`;
-    //  console.log(`>>>>>> ${s}`);
   }
 
   printSqrt(source: string) {
+
+    this.data += `\n  error_msg: .asciiz "Não é uma raiz quadrada perfeita"`;
+
     const destination = this.registers.pop();
 
     const auxReg1 = this.registers.pop();
