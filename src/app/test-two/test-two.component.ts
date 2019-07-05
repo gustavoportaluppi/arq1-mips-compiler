@@ -12,7 +12,7 @@ export class TestTwoComponent implements OnInit {
   exp = '1 1 + 3 2 - / 5 *';
   exps = exps;
 
-  registers = registers;
+  registers = registers.slice();
 
   a1 = '1 1 + 3 2 - / 5 *'; // 10
   a2 = '5 1 2 + 4 * + 3 -'; // 14
@@ -53,7 +53,7 @@ export class TestTwoComponent implements OnInit {
   }
 
   resetData() {
-    this.registers = registers;
+    this.registers = registers.slice();
     this.operands = [];
 
     this.data = `\n.data\n`;
